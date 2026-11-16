@@ -1,5 +1,23 @@
-bash
-build-essential
+# PlainNix package manifest
+# Debian package names; installed by scripts/bootstrap.sh
+xfce4
+xfce4-goodies
+lightdm
+network-manager
+network-manager-gnome
+firefox-esr
+fonts-dejavu
+fonts-noto
+dbus-x11
+xorg
+alsa-utils
+pavucontrol
+blueman
+cups
+gvfs
+thunar-archive-plugin
+file-roller
+bash-completion
 ca-certificates
 curl
 git
@@ -7,15 +25,12 @@ gnupg
 htop
 less
 nano
-net-tools
 openssh-client
-openssh-server
 python3
 python3-pip
 rsync
 sudo
 tree
-vim
 wget
 xz-utils
 zip

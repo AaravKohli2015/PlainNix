@@ -1,61 +1,61 @@
 # PlainNix
-A lightweight, Debian-based Linux system focused on simplicity, familiar shell workflows, and beginner-friendly documentation.
 
-PlainNix is designed to feel comfortable to newcomers while staying light enough for older hardware and minimal installs. The project is intentionally practical: a clean Debian base, a small curated package set, and a shell-first experience that avoids unnecessary complexity.
+PlainNix is a lightweight, Debian-based Linux system with a friendly graphical desktop, a familiar web browser, and simple shell workflows. It aims to feel approachable for people used to Android or macOS, while remaining a real, customizable Debian system.
 
-## Goals
+## What you get
 
-- Keep the base system small and understandable
-- Use Debian packages and familiar package management
-- Favor simple command-line workflows over flashy desktop complexity
-- Make setup and maintenance easy for beginners
-- Provide a clear, documented system that is easy to extend
+- **XFCE desktop** with a clean panel, application menu, and desktop settings
+- **Firefox ESR** as the default web browser
+- Network, audio, Bluetooth, printing, and display tools for everyday desktop use
+- A non-root `plainnix` account; the setup asks you to choose its password
+- Helpful shell defaults and common command-line utilities
+- Debian's standard APT package management
 
-## System vision
+PlainNix is inspired by the ease of use of Android and macOS, but it does not copy their interfaces or include their proprietary software. XFCE is intentionally lightweight and can be customized through **Settings** and **Panel** preferences.
 
-PlainNix aims to be a polished but minimal Linux distribution with:
+## Try it on Debian
 
-- Debian as the foundation
-- a lightweight desktop or console environment
-- common GNU/Linux tools installed by default
-- beginner-friendly configuration files and scripts
-- predictable package selection and a sane default layout
+> The bootstrap script configures an existing Debian installation. It is not yet a standalone installer or bootable ISO. Test it in a virtual machine first; it installs a graphical desktop and changes system packages.
 
-## Project structure
+1. Install a supported Debian system with network access and a working `apt-get`.
+2. Clone or copy this repository.
+3. Run the bootstrap as root:
 
-- `scripts/bootstrap.sh` — installs the base Debian system and core utilities
-- `scripts/first-boot.sh` — sets up the default user experience after installation
-- `config/packages.txt` — curated package manifest for the base system
-- `docs/architecture.md` — design notes and system architecture
+   ```bash
+   sudo ./scripts/bootstrap.sh
+   ```
 
-## Quick start
+4. Choose a password when prompted for the `plainnix` account.
+5. Reboot and sign in to the XFCE desktop as `plainnix`.
+6. Open Firefox from the applications menu. On first login, run the optional user setup:
 
-1. Boot into a Debian installer or live environment.
-2. Clone or copy this repository onto the target machine.
-3. Run:
+   ```bash
+   ./scripts/first-boot.sh
+   ```
 
-```bash
-sudo ./scripts/bootstrap.sh
-```
+The bootstrap may replace the display manager with LightDM. If a `plainnix` account already exists, it will not change its password.
 
-4. Reboot, then run:
+## Customize the desktop
 
-```bash
-./scripts/first-boot.sh
-```
+- Use **Applications → Settings** to adjust display, appearance, keyboard, and power settings.
+- Right-click the panel to add launchers or change its layout.
+- Pin Firefox or other apps to the panel for quick access.
+- Install software with the graphical package manager or `sudo apt install <package>`.
 
-## Default philosophy
+## Project layout
 
-PlainNix is not trying to be a huge, opinionated desktop ecosystem. It is a clean, stable, shell-friendly Debian-based operating system for people who want to stay close to the command line and keep things easy to understand.
+- `scripts/bootstrap.sh` — installs the desktop, browser, utilities, and account setup on Debian
+- `scripts/first-boot.sh` — creates useful folders and adds optional shell aliases for the current user
+- `config/packages.txt` — package manifest for the PlainNix desktop
+- `docs/architecture.md` — design notes and current limitations
 
 ## Roadmap
 
-- Minimal Debian base install
-- lightweight desktop option
-- better onboarding and documentation
-- system configuration templates for common workloads
-- simple package customization workflow
+- Build a reproducible Debian live image / installable ISO
+- Add a first-login welcome screen with setup shortcuts
+- Refine desktop defaults, accessibility, and touch-friendly settings
+- Offer optional desktop profiles for lower-powered machines
 
-## License
+## Safety note
 
-This project is an open starter template for a lightweight Debian-based Linux system. Adapt and redistribute it under the terms of your preferred open-source license.
+Use this project on a fresh test installation or virtual machine until you have reviewed the scripts. The bootstrap requires root privileges to install system packages and configure login and network services. It does not configure a default password or enable automatic login.

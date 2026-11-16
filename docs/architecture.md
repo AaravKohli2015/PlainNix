@@ -1,49 +1,37 @@
 # PlainNix architecture
 
-PlainNix follows a deliberately simple architecture:
+PlainNix is a Debian-based desktop project focused on approachable defaults, familiar tools, and a lightweight graphical experience.
 
-## Core idea
+## Current implementation
 
-PlainNix is a Debian-based operating system built around a small base system and a familiar shell workflow. The goal is not to reinvent Linux, but to make a version of Debian that feels approachable, low-friction, and easy to maintain.
+- Debian package management (`apt`) and Debian system services
+- XFCE desktop environment, with a conventional panel, application menu, and settings tools
+- LightDM graphical login manager
+- Firefox ESR web browser
+- NetworkManager for desktop network connections
+- Optional audio, Bluetooth, printing, archive, and file-manager support
+- A regular `plainnix` user created by the bootstrap, with a password chosen interactively
 
-## Base layer
+## User experience goals
 
-- Debian stable or testing base
-- minimal systemd services enabled by default
-- standard apt package management
-- no unnecessary desktop extras or heavy software stacks
+PlainNix takes inspiration from the ease of use associated with Android and macOS: discoverable apps, clear settings, and simple navigation. It does not imitate their proprietary interfaces. XFCE keeps the desktop responsive on modest hardware and lets users customize panels and shortcuts through graphical settings.
 
-## User environment
+## Setup flow
 
-- bash shell
-- common utilities such as `curl`, `git`, `less`, `nano`, `grep`, `sed`, `tar`
-- optional lightweight desktop stack if the user wants a graphical environment
-- clear defaults for shell aliases, directories, and user configuration
+1. Start from an existing Debian installation with network access.
+2. Run `sudo ./scripts/bootstrap.sh` to install the desktop and packages.
+3. Reboot and sign in at LightDM as `plainnix`.
+4. Optionally run `./scripts/first-boot.sh` to create personal folders and aliases.
 
-## Package philosophy
+The setup avoids a hard-coded password and does not enable automatic login. Existing `plainnix` account passwords are not changed.
 
-PlainNix favors:
+## Limitations
 
-- tools that are stable and familiar
-- common packages with broad compatibility
-- minimal dependencies
-- beginner-friendly defaults
-
-## Why this works
-
-This approach makes the system easier to debug and easier to learn. It reduces complexity, keeps commands familiar, and gives users a plain Linux environment that still behaves like a real Debian system.
-
-## Typical installation flow
-
-1. Install Debian base system
-2. Add required packages from `config/packages.txt`
-3. Create a non-root user
-4. Configure shell defaults and helpful aliases
-5. Enable services and verify the system boot process
+The bootstrap configures an installed Debian system; this repository does not yet produce a live image or standalone installer. Package availability and the LightDM configuration flow depend on the Debian release. Run it in a disposable virtual machine before using it on a machine with important data. Review scripts before running privileged commands.
 
 ## Future directions
 
-- optional XFCE or LXQt desktop profile
-- a curated default configuration for development work
-- optional secure defaults for servers and workstations
-- improved documentation for new users
+- Reproducible live image and installer build
+- First-login welcome screen and graphical setup guide
+- Refined accessibility, touch, theme, and panel defaults
+- Optional lower-resource desktop profile
