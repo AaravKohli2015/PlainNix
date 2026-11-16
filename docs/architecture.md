@@ -6,6 +6,8 @@ PlainNix is a Debian-based desktop project focused on approachable defaults, fam
 
 - Debian package management (`apt`) and Debian system services
 - XFCE desktop environment, with a conventional panel, application menu, and settings tools
+- Plank dock at the bottom with launchers for Firefox ESR, Thunar Files, and XFCE Terminal
+- A small session startup helper moves the default XFCE panel to the top and launches Plank
 - LightDM graphical login manager
 - Firefox ESR web browser
 - NetworkManager for desktop network connections
@@ -14,12 +16,14 @@ PlainNix is a Debian-based desktop project focused on approachable defaults, fam
 
 ## User experience goals
 
-PlainNix takes inspiration from the ease of use associated with Android and macOS: discoverable apps, clear settings, and simple navigation. It does not imitate their proprietary interfaces. XFCE keeps the desktop responsive on modest hardware and lets users customize panels and shortcuts through graphical settings.
+PlainNix takes inspiration from the discoverability of Android and the polished desktop feel of macOS: quick access to favorite apps, clear settings, and simple navigation. It does not copy proprietary interfaces. The Plank app dock provides a sleek, familiar app bar, while XFCE keeps the desktop lightweight and customizable.
+
+The dock starts automatically in the XFCE session. Users can adjust its appearance and behavior through Plank Preferences and add launchers in `~/.config/plank/dock1/launchers/`.
 
 ## Setup flow
 
 1. Start from an existing Debian installation with network access.
-2. Run `sudo ./scripts/bootstrap.sh` to install the desktop and packages.
+2. Run `sudo ./scripts/bootstrap.sh` to install the desktop, dock, and packages.
 3. Reboot and sign in at LightDM as `plainnix`.
 4. Optionally run `./scripts/first-boot.sh` to create personal folders and aliases.
 

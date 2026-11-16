@@ -51,6 +51,7 @@ apt-get upgrade -y
 apt-get install -y --no-install-recommends \
   xfce4 \
   xfce4-goodies \
+  plank \
   lightdm \
   network-manager \
   network-manager-gnome \
@@ -91,6 +92,8 @@ systemctl enable cups 2>/dev/null || true
 
 install -d -o plainnix -g plainnix \
   /home/plainnix/.local/bin \
+  /home/plainnix/.config/autostart \
+  /home/plainnix/.config/plank/dock1/launchers \
   /home/plainnix/Desktop \
   /home/plainnix/Documents \
   /home/plainnix/Downloads \
@@ -98,6 +101,42 @@ install -d -o plainnix -g plainnix \
   /home/plainnix/Pictures \
   /home/plainnix/Videos \
   /home/plainnix/projects
+
+# Start Plank with the desktop session and move the XFCE panel to the top,
+# leaving the bottom edge clear for the app dock.
+cat > /usr/local/bin/plainnix-desktop-startup <<'EOF'
+#!/usr/bin/env bash
+set -eu
+
+# Wait briefly for the XFCE session configuration service to come up.
+for _ in {1..20}; do
+  if xfconf-query -c xfce4-panel -p /panels/panel-1/position >/dev/null 2>&1; then
+    xfconf-query -c xfce4-panel -p /panels/panel-1/position -s 'p=10;x=0;y=0' || true
+    break
+  fi
+  sleep 1
+done
+
+exec plank
+EOF
+chmod 0755 /usr/local/bin/plainnix-desktop-startup
+
+cat > /home/plainnix/.config/autostart/plainnix-dock.desktop <<'EOF'
+[Desktop Entry]
+Type=Application
+Name=PlainNix App Dock
+Comment=Quick access to your favorite applications
+Exec=/usr/local/bin/plainnix-desktop-startup
+OnlyShowIn=XFCE;
+Terminal=false
+EOF
+
+for app in firefox-esr thunar xfce4-terminal; do
+  cat > "/home/plainnix/.config/plank/dock1/launchers/${app}.dockitem" <<EOF
+[PlankDockItemPreferences]
+Launcher=file:///usr/share/applications/${app}.desktop
+EOF
+done
 
 if [[ ! -e /home/plainnix/.bashrc ]]; then
   cat > /home/plainnix/.bashrc <<'EOF'
@@ -108,13 +147,14 @@ alias l='ls -CF'
 export EDITOR=nano
 export VISUAL=nano
 EOF
-  chown plainnix:plainnix /home/plainnix/.bashrc
 fi
+
+chown -R plainnix:plainnix /home/plainnix
 
 cat > /etc/motd <<'EOF'
 Welcome to PlainNix.
-A lightweight Debian desktop with XFCE and Firefox ESR.
+A lightweight Debian desktop with XFCE, Firefox ESR, and the Plank app dock.
 EOF
 
 echo "PlainNix desktop setup is complete. Reboot, then sign in as plainnix."
-echo "The login screen will start with LightDM."
+echo "The login screen will start with LightDM; the Plank app dock starts in the desktop session."
